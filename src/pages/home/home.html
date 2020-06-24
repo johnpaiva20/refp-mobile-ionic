@@ -1,0 +1,92 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Despesas - Projetos
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>  
+  <div class="div-principal">
+    <ion-row>
+      <ion-col style="width: 100%;">
+        <ion-item style="border-radius: 5px;">
+          <ion-label>Projeto</ion-label>
+          <ion-select [(ngModel)]="model.projResource">
+            <ion-option *ngFor= "let project of projects" value = "{{ project.id }}">{{ project.title }}</ion-option>            
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col style="width: 50%;">
+        <ion-item style="border-radius: 5px;">
+          <ion-input type="number" placeholder="Valor da Despesa" [(ngModel)]="model.value"></ion-input>
+        </ion-item>
+      </ion-col>
+
+      <ion-col style="width: 50%;">
+        <ion-item style="border-radius: 5px;">
+          <ion-label>Rúbrica</ion-label>
+          <ion-select [(ngModel)]="model.expenseType">
+            <ion-option value="VD">Viagens e Diárias</ion-option>
+            <ion-option value="OU">Outros</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12">
+        <ion-item>
+          <ion-label>Data</ion-label>
+          <ion-datetime displayFormat="DD MM YY" placeholder="Selecione a data" [(ngModel)]="model.data"></ion-datetime>
+        </ion-item>
+      </ion-col>     
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12">
+        <ion-item style="border-radius: 5px;">
+          <ion-input type="number" placeholder="Nº Documento" [(ngModel)]="model.documentNumber"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col style="width: 50%;">
+        <ion-item style="border-radius: 5px;">
+          <ion-input type="text" placeholder="Beneficiado" [(ngModel)]="model.recipient"></ion-input>
+        </ion-item>
+      </ion-col>  
+      <ion-col style="width: 50%;">
+        <ion-item style="border-radius: 5px;">
+          <ion-input type="text" placeholder="CNPJ/CPF" [(ngModel)]="model.cpfCnpj"></ion-input>
+        </ion-item>
+      </ion-col>   
+    </ion-row>
+
+   
+    <label style="color: white;">Justificativa:</label>
+    <ion-item style="border-radius: 5px;">
+      <ion-textarea placeholder="Digite seu texto aqui..." [(ngModel)]="model.justify"></ion-textarea>
+    </ion-item>
+    <label style="color: white;">Arquivos anexados:</label>
+    <ion-content class="galeria" padding>
+      <img src="{{model.image}}">
+    </ion-content>
+    <br>
+    <ion-row>
+      <ion-col style="width: 50%;">
+      <button ion-button style="background: white; color: #3e8f52; width: 100%; font-size: 20px" (click) = "takePicture()"> <ion-icon name = "camera" font-size = "20px"></ion-icon></button>
+    </ion-col>
+    <ion-col style="width: 50%;">
+      <button ion-button style="background: white; color: #3e8f52; width: 100%; font-size: 20px;" (click)= "enviarDespesa()">Enviar despesa</button>
+    </ion-col>
+    </ion-row>
+    
+  </div>
+  <ion-footer>
+    
+  </ion-footer>
+</ion-content>
