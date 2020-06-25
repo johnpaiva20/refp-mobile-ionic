@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { NavController, AlertController} from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { DespesasProvider } from './../../providers/despesas/despesas';
+import { HttpClient } from '@angular/common/http';
+import 'rxjs/add/operator/map';
 
 
 @Component({
@@ -9,14 +11,16 @@ import { DespesasProvider } from './../../providers/despesas/despesas';
   templateUrl: 'home.html'
 })
 export class HomePage {
+    
+  private API_URL = 'http://stage-refp-api.herokuapp.com/'
 
     photo: string = '';
 
-    projects: any;
+    listaProjetos: Projetos[];
 
     model: Despesa;
 
-  constructor(public navCtrl: NavController, private camera: Camera, public alertCtrl: AlertController, private despesaProvider: DespesasProvider) {
+  constructor(public navCtrl: NavController, private camera: Camera, public alertCtrl: AlertController, private despesaProvider: DespesasProvider, private http: HttpClient) {
 
     this.model = new Despesa();
     
@@ -25,17 +29,17 @@ export class HomePage {
     this.model.image = '';
     this.model.justify = '';
     this.model.documentNumber = '';
-    this.model.projResource = 2;
+    this.model.projResource = '';
     this.model.status = true;
     this.model.documentType = 'NF';
     this.model.expenseType = 'VD';
     this.model.value = 0;
     this.model.recipient = '';
-    this.model.id = 61;
-
-  
+    this.model.id = 61;    
+    
+    this.getAllProjects();
    }
-
+   
   showAlertSucess(){
     const alert = this.alertCtrl.create({
       title: 'Enviado',
@@ -83,13 +87,14 @@ export class HomePage {
                                        this.model.documentNumber, 
                                        this.model.image, 
                                        this.model.justify, 
-                                       this.model.projResource, 
+                                       parseInt(this.model.projResource), 
                                        this.model.recipient, 
                                        this.model.status, 
                                        this.model.value,
                                        this.model.id
                                        )
                                        .then((result: any) => {
+                                         console.log(result)
                                         this.showAlertSucess();
                                         
                                         this.model.cpfCnpj = '';
@@ -97,31 +102,36 @@ export class HomePage {
                                         this.model.image = '';
                                         this.model.justify = '';
                                         this.model.documentNumber = '';
-                                        this.model.projResource = 2;
+                                        this.model.projResource = '';
                                         this.model.status = true;
                                         this.model.documentType = 'NF';
-                                        this.model.expenseType = '';
+                                        this.model.expenseType = 'VD';
                                         this.model.value = 0;
                                         this.model.recipient = '';
                                         this.model.id = 61;                               
 
                                        })
                                        .catch((error: any) => {
+                                         console.log(error);
                                         this.showAlertError();
                                        });
   }
 
   getAllProjects(){
-    this.despesaProvider.getAllProjects()
-    .then((result: any) => {
-      for(var i = 0; i < result.projects.lenght; i++){
-        var project = result.projects[i];
-        this.projects.push(project);
+    this.http.get<Projetos[]>(this.API_URL + 'projects').subscribe(
+      result =>{
+        this.listaProjetos = result;
       }
-    })
+    )
   }
 
 }
+export class Projetos{
+                id: number;
+                title: string;  
+                codigoAneel: string;              
+}
+
 export class Despesa {
                 cpfCnpj: string;
                 data: string;
@@ -130,7 +140,7 @@ export class Despesa {
                 documentNumber: string;
                 image: string;
                 justify: string;
-                projResource: number;
+                projResource: string;
                 recipient: string;
                 status: boolean;                  
                 value: number;

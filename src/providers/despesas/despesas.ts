@@ -41,6 +41,7 @@ export class DespesasProvider {
 
           this.http.post(this.API_URL + 'expenses', despesa)
           .subscribe((result: any) => {
+            console.log(result)
             resolve(result);
             
           }),
@@ -50,18 +51,6 @@ export class DespesasProvider {
 
         });
 
-  }
-
-  getAllProjects(){
-    return new Promise((resolve, reject) => {
-      this.http.get(this.API_URL + 'projects')
-      .subscribe((result: any) => {
-        resolve(result);
-      },
-      (error) => {
-        reject(error);
-      })
-    });
   }
 
 }

@@ -12,7 +12,7 @@
         <ion-item style="border-radius: 5px;">
           <ion-label>Projeto</ion-label>
           <ion-select [(ngModel)]="model.projResource">
-            <ion-option *ngFor= "let project of projects" value = "{{ project.id }}">{{ project.title }}</ion-option>            
+            <ion-option *ngFor= "let projeto of listaProjetos" value = "{{ projeto.id }}" >{{ projeto.title }}</ion-option>            
           </ion-select>
         </ion-item>
       </ion-col>
